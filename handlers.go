@@ -7,13 +7,15 @@ import (
 
 func addNew(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if len(m.Content) < NewReminderCommandMinLength {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Reminder description is too short, try `!newremind <description>`")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Reminder description is too short, try `!newremind <description>`")
 		return
 	} else if len(m.Content)+NewReminderCommandMinLength-1 > MaxNameLength {
 		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+InvalidDescription)
 		return
 	} else if len(runningReminders) > ReminderLimit {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Maximum number of reminders reached.")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Maximum number of reminders reached.")
 	}
 
 	newRemind := Reminder{}
@@ -45,7 +47,8 @@ func setDate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if TimeDiff(parsed) < 0 {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Date has already passed, please choose another date.")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Date has already passed, please choose another date.")
 		return
 	}
 
@@ -54,11 +57,14 @@ func setDate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	tempStore[m.Author.ID] = remind
 
 	if remind.Interval == "" {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" At what interval would you like to be reminded at? Respond "+
-			"with `!setinterval <cron expression>`\nFor help with cron expressions, refer to https://crontab.guru")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" At what interval would you like to be reminded at? Respond "+
+			"with `!setinterval <cron expression>`\n"+
+			"For help with cron expressions, refer to https://crontab.guru")
 	} else {
 		if TimeDiff(parsed) < 0 {
-			s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Negligible difference in date and now, please choose another date.")
+			s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+				" Negligible difference in date and now, please choose another date.")
 			remind.Date = ""
 			remind.ParsedTime = time.Time{}
 			tempStore[m.Author.ID] = remind
@@ -95,7 +101,8 @@ func setInterval(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+AskDate)
 	} else {
 		if TimeDiff(remind.ParsedTime) < 0 {
-			s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Negligible difference in date and now, please choose another date.")
+			s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+				" Negligible difference in date and now, please choose another date.")
 			remind.Date = ""
 			remind.ParsedTime = time.Time{}
 			tempStore[m.Author.ID] = remind
@@ -107,12 +114,14 @@ func setInterval(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func clearIncomplete(s *discordgo.Session, m *discordgo.MessageCreate) {
 	delete(tempStore, m.Author.ID)
-	s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Your incomplete reminder has been cleared.")
+	s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+		" Your incomplete reminder has been cleared.")
 }
 
 func setDescription(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if len(m.Content) < DescriptionCommandMinLength {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Reminder description is too short, try `!setdescription <description>`")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Reminder description is too short, try `!setdescription <description>`")
 		return
 	} else if len(m.Content)+NewReminderCommandMinLength-1 > MaxNameLength {
 		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+InvalidDescription)
@@ -145,25 +154,29 @@ func showAll(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func stopReminder(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if len(m.Content) < DeleteCommandMinLength {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Command error, make sure the format is `!delremind <id>`")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Command error, make sure the format is `!delremind <id>`")
 		return
 	}
 
 	id, err := ParseInt(m.Content[DeleteCommandMinLength:])
 
 	if err != nil {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Invalid ID, please try again.")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Invalid ID, please try again.")
 		return
 	}
 
 	if id < 1 || id > ReminderLimit+1 {
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Invalid ID, please try again.")
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+			" Invalid ID, please try again.")
 		return
 	}
 
 	runningReminders[id-1].IsDead = true
 	WriteJSON()
-	s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+" Reminder stopped.")
+	s.ChannelMessageSend(m.ChannelID, m.Author.Mention()+
+		" Reminder stopped.")
 }
 
 func sendHelp(s *discordgo.Session, m *discordgo.MessageCreate) {

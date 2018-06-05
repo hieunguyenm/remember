@@ -27,10 +27,6 @@ const (
 	DescriptionCommandMinLength = 17
 	DeleteCommandMinLength      = 12
 	RemindersFile               = "./reminders.json"
-	HelpCommand                 = " Create a new reminder with `!newremind <description>`\n" +
-		"Edit parameters with `!setdescription <descrption>`, `!setdate <YYYY-MM-DD>` and `!setinterval <cron expression>`\n" +
-		"List all reminders with `!showreminders`, clear incomplete reminders with `!clearnew`, and stop reminders with " +
-		"`!stopreminder <id>`\n" + "Note that user mentions in descriptions will not work, except for `@everyone`"
 )
 
 // Embed : struct for Discord embeds
@@ -118,7 +114,8 @@ func InitRemind(s *discordgo.Session, m *discordgo.MessageCreate, id string, rem
 		SetColor(0xff00)
 
 	s.ChannelMessageSendEmbed(m.ChannelID, embed.MessageEmbed)
-	log.Println("Reminder \"" + remind.Description + "\" created with interval " + remind.Interval + " for " + remind.Date + ".")
+	log.Println("Reminder \"" + remind.Description + "\" created with interval " +
+		remind.Interval + " for " + remind.Date + ".")
 
 	runningReminders = append(runningReminders, remind)
 
