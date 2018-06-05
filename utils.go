@@ -98,8 +98,12 @@ func AddCron(index int, s *discordgo.Session, m *discordgo.MessageCreate) {
 	cronRunner.AddFunc("10 "+runningReminders[index].Interval, func() {
 		days := TimeDiff(runningReminders[index].ParsedTime)
 		if days > 0 && !runningReminders[index].IsDead {
-			s.ChannelMessageSend(m.ChannelID, "@everyone "+strconv.Itoa(days)+" days until "+
-				runningReminders[index].Description+".")
+			embed := CreateEmbed().
+				SetColor(0x5e35b1).
+				SetTitle(runningReminders[index].Description).
+				SetDescription("@everyone " + strconv.Itoa(days) + " days remaining.")
+
+			s.ChannelMessageSendEmbed(m.ChannelID, embed.MessageEmbed)
 			log.Println("Reminder \"" + runningReminders[index].Description + "\" alerted.")
 		}
 	})
