@@ -6,6 +6,8 @@ Discord bot for periodic reminders
 
 It is recommended to use [`glide`](https://github.com/Masterminds/glide) to update and install dependencies but is not necessary.
 
+Make sure to clone this repository **INSIDE** of your `$GOPATH`.
+
 ### With `glide`
 
 ```bash
