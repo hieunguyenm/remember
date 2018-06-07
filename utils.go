@@ -154,6 +154,8 @@ func ReadJSON() {
 			runningReminders = append(runningReminders[:index], runningReminders[index+1:]...)
 		}
 	}
+
+	WriteJSON()
 }
 
 // ListReminders : Create an embed of all reminders
