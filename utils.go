@@ -173,7 +173,8 @@ func ListReminders() *Embed {
 		} else {
 			fieldDescription = runningReminders[index].Description
 		}
-		embed.AddField(strconv.Itoa(index+1)+". "+fieldDescription, runningReminders[index].Date)
+		embed.AddField(strconv.Itoa(index+1)+". "+fieldDescription, runningReminders[index].Date+
+			"("+strconv.Itoa(TimeDiff(runningReminders[index].ParsedTime))+" days remaining)")
 	}
 
 	return embed
