@@ -187,7 +187,7 @@ func sendHelp(s *discordgo.Session, m *discordgo.MessageCreate) {
 		AddField("`!newremind <description>`", "Creates a new reminder with a description. "+
 			"Note that user mentions in descriptions will not work, with the exception of `@everyone`").
 		AddField("`!setdescription <description>`", "Sets the description for an incomplete reminder.").
-		AddField("`!setdate <YYYY-MM-DD>`", "Sets the date for an incomplete reminder.").
+		AddField("`!setdate <DD-MM-YYYY>`", "Sets the date for an incomplete reminder.").
 		AddField("`!setinterval <cron expression>`", "Sets the reminder interval for an incomplete reminder.\n"+
 			"For help with cron expressions, refer to https://crontab.guru").
 		AddField("`!showreminders`", "Shows a list of all active reminders.").

@@ -19,8 +19,8 @@ const (
 	InvalidDateParse            = " Error parsing time. Make sure it is in the format: YYYY-MM-DD."
 	InvalidDescription          = " Your description is over the 256 character limit."
 	NoIncomplete                = " You have no incomplete reminders in progress."
-	AskDate                     = " What date is the reminder for? Respond with `!setdate <YYYY-MM-DD>`"
-	TimeParseFormat             = "2006-01-02"
+	AskDate                     = " What date is the reminder for? Respond with `!setdate <DD-MM-YYYY>`"
+	TimeParseFormat             = "02-01-2006"
 	DateCommandLength           = 19
 	NewReminderCommandMinLength = 12
 	IntervalCommandMinLength    = 14
@@ -101,7 +101,7 @@ func AddCron(index int, s *discordgo.Session, m *discordgo.MessageCreate) {
 			embed := CreateEmbed().
 				SetColor(0x5e35b1).
 				SetTitle(runningReminders[index].Description).
-				SetDescription("@everyone " + strconv.Itoa(days) + " days remaining.")
+				SetDescription(strconv.Itoa(days) + " days remaining until " + runningReminders[index].Date + ".")
 
 			s.ChannelMessageSendEmbed(m.ChannelID, embed.MessageEmbed)
 			log.Println("Reminder \"" + runningReminders[index].Description + "\" alerted.")
