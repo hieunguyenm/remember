@@ -82,6 +82,7 @@ func (s *Scheduler) ScheduleReminder(ds *discordgo.Session, r *Reminder) error {
 				Title:       r.Description,
 				Description: fmt.Sprintf("%d days remaining until %s.", days, r.Date),
 			})
+			log.Printf("Alerted reminder %q for %s with interval %q\n", r.Description, r.Date, r.Interval)
 		} else {
 			// Remove reminder from scheduler if reminder date has passed.
 			ds.ChannelMessageSend(r.Channel, fmt.Sprintf("Reminder `%s` is complete, stopping notifications.", r.Description))

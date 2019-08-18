@@ -111,7 +111,7 @@ func ListReminders(s *discordgo.Session, m *discordgo.MessageCreate, c *schedule
 
 	var builder strings.Builder
 	for remind, id := range c.ReminderToID {
-		builder.WriteString(fmt.Sprintf("`[%d]` %s\n", id, remind.Description))
+		builder.WriteString(fmt.Sprintf("`[%d]` %s set for %s (%s).\n", id, remind.Description, remind.Date, remind.Interval))
 	}
 	s.ChannelMessageSend(m.ChannelID, strings.TrimSpace(builder.String()))
 }
