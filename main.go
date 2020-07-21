@@ -20,7 +20,11 @@ func main() {
 
 	// Check if arguments are empty.
 	if *token == "" {
-		log.Fatalln("Please specify bit token with -token <token string>")
+		tokenEnv := os.Getenv("TOKEN")
+		if tokenEnv == "" {
+			log.Fatalln("Please specify token with -token <token string> or via the TOKEN environment variable")
+		}
+		*token = tokenEnv
 	}
 	if *jsonPath == "" {
 		log.Fatalln("Please specify reminders JSON path with -json <path>")
